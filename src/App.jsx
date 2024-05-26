@@ -1,3 +1,5 @@
+import toast, { Toaster } from "react-hot-toast";
+
 import "./App.css";
 import SearchBar from "./components/SearchBar/SearchBar.jsx";
 import ImageGallery from "./components/ImageGallery/ImageGallery.jsx";
@@ -8,7 +10,6 @@ import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn.jsx";
 import ImageModal from "./components/ImageModal/ImageModal.jsx";
 
 import { useState, useEffect } from "react";
-
 export default function App() {
   const [value, setValue] = useState("");
   const [images, setImages] = useState([]);
@@ -20,7 +21,13 @@ export default function App() {
   const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
-    if (searchQuery.trim() === "") return;
+    if (searchQuery.trim() === "") {
+      toast.error("Please fill out the search bar", {
+        duration: 4000,
+        position: "top-right",
+      });
+      return;
+    }
 
     async function fetchPhotos() {
       try {
@@ -38,6 +45,7 @@ export default function App() {
     }
     fetchPhotos();
   }, [page, searchQuery]);
+
   const handleSearch = async () => {
     setSearchQuery(value);
     setPage(1);
@@ -58,7 +66,9 @@ export default function App() {
   };
   return (
     <>
-      <SearchBar setValue={setValue} value={value} onSearch={handleSearch} />
+      <Toaster />
+
+      {<SearchBar setValue={setValue} value={value} onSearch={handleSearch} />}
       {loading && <Loader />}
       {error && <ErrorMessage />}
       {images.length > 0 && (
