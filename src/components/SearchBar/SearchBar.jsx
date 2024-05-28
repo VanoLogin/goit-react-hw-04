@@ -1,4 +1,5 @@
 import styles from "./styles.module.css";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function SearchBar({ value, setValue, onSearch }) {
   function handleValue(event) {
@@ -6,6 +7,13 @@ export default function SearchBar({ value, setValue, onSearch }) {
   }
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (value.trim() === "") {
+      toast.error("Please fill out the search bar", {
+        duration: 4000,
+        position: "top-right",
+      });
+      return;
+    }
     onSearch();
   };
 

@@ -21,14 +21,7 @@ export default function App() {
   const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
-    if (searchQuery.trim() === "") {
-      toast.error("Please fill out the search bar", {
-        duration: 4000,
-        position: "top-right",
-      });
-      return;
-    }
-
+    if (!searchQuery) return;
     async function fetchPhotos() {
       try {
         setError(false);
